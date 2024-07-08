@@ -1,0 +1,10 @@
+{
+    "name": "acme.eu.clickstream.invalid.s3.sink",
+    "config": {
+        "s3.bucket.name": "acme.eu-west-1.stg.data.lake",
+        "topics": "acme.clickstream.invalid.events",
+        "store.url": "http://minio-storage:9000",
+        "aws.secret.access.key": "minioadmin",
+        "aws.access.key.id": "minioadmin"
+    }
+}

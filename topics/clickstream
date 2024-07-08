@@ -1,0 +1,4 @@
+acme.clickstream.raw.events,1,1
+acme.clickstream.invalid.events,1,1
+acme.clickstream.latest.events,1,1
+acme.clickstream.unique.users,1,1
