@@ -8,7 +8,7 @@ This repository is my portfolio for data engineering.
 ## Build and Up the platform
 Execute the following command
 ```
-$ cd kantox-data-eng-test
+$ cd portfolio
 $ docker compose up -d --build
 $ docker ps -a
 ```
