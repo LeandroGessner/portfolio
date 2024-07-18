@@ -7,7 +7,7 @@ from .kafka_config import config
 import json
 
 
-class KafkaKantox:
+class Kafka:
     def __init__(self) -> None:
         self.config = config['kafka']
         self.sr_config: dict = config['schema_registry']
@@ -27,15 +27,14 @@ class KafkaKantox:
             key: str
     ) -> bool:
         success: bool = True
-
         schema_registry_client = SchemaRegistryClient(self.sr_config)
 
         try:
-            latest_schema = schema_registry_client.get_latest_version("kantox-challenge")
+            latest_schema = schema_registry_client.get_latest_version("portfolio")
         except SchemaRegistryError:
             schema = Schema(schema_str=self.avro_schema, schema_type='AVRO')
-            schema_registry_client.register_schema('kantox-challenge', schema=schema)
-            latest_schema = schema_registry_client.get_latest_version("kantox-challenge")
+            schema_registry_client.register_schema('portfolio', schema=schema)
+            latest_schema = schema_registry_client.get_latest_version("portfolio")
 
         kafka_config = self.config | {
             "key.serializer": StringSerializer(),
@@ -61,6 +60,7 @@ class KafkaKantox:
 
             success = False
 
+            # TODO: serialize invalid events
             producer = Producer(self.config)
             producer.produce(
                 topic=self.invalid_data_topic,
@@ -71,23 +71,4 @@ class KafkaKantox:
 
             producer.flush()
 
-        # producer.flush()
-
         return success
-
-
-# if __name__ == "__main__":
-#     kafka = KafkaKantox()
-#     data = {
-#         "id": 101408,
-#         "type": "page_view",
-#         "event": {
-#             "user_agent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/532.1 (KHTML, like Gecko) Chrome/38.0.832.0 Safari/532.1",
-#             "ip": "73.220.204.243",
-#             "customer_id": None,
-#             "timestamp": "2022-05-20T10:38:18.648681",
-#             "page": "https://xcc-webshop.com/products/553"
-#         }
-#     }
-#
-#     kafka.send_message(data=data, key='tumb')

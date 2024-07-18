@@ -1,13 +1,12 @@
 from uuid import uuid4
 import json
 import hashlib
-import os
-from .kafka import KafkaKantox
+# import os
+from .kafka import Kafka
 
 
 OK = {'status': 'OK'}
-
-KAFKA = KafkaKantox()
+KAFKA = Kafka()
 
 
 def get_package_id() -> str:
@@ -29,15 +28,7 @@ def collect(event: list):
         object_id = get_object_id(obj=json.dumps(ob, sort_keys=True))
         key = f"{package_id}={object_id}"
 
-        # print(f"PACKAGE ID: {package_id}")
-        # print(f"OBJECT ID: {object_id}")
-        # print(json.dumps(ob, indent=4))
-
         KAFKA.send_message(
             data=ob,
             key=key
         )
-
-
-if __name__ == "__main__":
-    print(os.path.abspath(os.path.expanduser('~')))
